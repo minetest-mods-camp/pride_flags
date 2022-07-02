@@ -6,6 +6,13 @@
 --------------------------------------------------------
 
 local wind_noise = PerlinNoise( 204, 1, 0, 500 )
+-- Check whether the new `get_2d` Perlin function is available,
+-- otherwise use `get2d`. Needed to suppress deprecation
+-- warning in newer Minetest versions.
+local old_get2d = true
+if wind_noise.get_2d then
+	old_get2d = false
+end
 local active_flags = { }
 
 local pi = math.pi
@@ -71,7 +78,14 @@ minetest.register_entity( "pride_flags:wavingflag", {
 	end,
 
 	reset_animation = function ( self, start_frame )
-		local cur_wind = wind_noise:get2d( { x = os.time( ) % 65535, y = 0 } ) * 30 + 30
+		local coords = { x = os.time( ) % 65535, y = 0 }
+		local cur_wind
+		if old_get2d then
+			cur_wind = wind_noise:get2d(coords)
+		else
+			cur_wind = wind_noise:get_2d(coords)
+		end
+		cur_wind = cur_wind * 30 + 30
 		minetest.log("verbose", "[pride_flags] Current wind: " .. cur_wind)
 		local anim_speed
 		local wave_sound
