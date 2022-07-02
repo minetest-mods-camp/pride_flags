@@ -144,7 +144,28 @@ minetest.register_node( "pride_flags:lower_mast", {
                 type = "fixed",
                 fixed = { { -3/32, -1/2, -3/32, 3/32, 1/2, 3/32 } },
         },
+
+	on_rotate = function(pos, node, user, mode, new_param2)
+		if mode == screwdriver.ROTATE_AXIS then
+			return false
+		end
+	end,
 } )
+
+local function rotate_flag_by_param2( flag, param2 )
+	local facedir_to_yaw = {
+		[0] = rad_90,
+		[1] = 0,
+		[2] = -rad_90,
+		[3] = rad_180,
+	}
+	local baseyaw = facedir_to_yaw[ param2 ]
+	if not baseyaw then
+		minetest.log("warning", "[pride_flags] Unsupported flag pole node param2: "..tostring(param2))
+		return
+	end
+	flag:set_yaw( baseyaw - rad_180 )
+end
 
 local function spawn_flag( pos )
 	local node_idx = minetest.hash_node_position( pos )
@@ -156,17 +177,11 @@ local function spawn_flag( pos )
 		[3] = { x = 0.1, y = 0.6, z = 0 },
 	}
 
-	local facedir_to_yaw = {
-		[0] = rad_90,
-		[1] = 0,
-		[2] = -rad_90,
-		[3] = rad_180,
-	}
 	local flag_pos = vector.add( pos, vector.multiply( facedir_to_pos[ param2 ], 1 ) )
 	local obj = minetest.add_entity( flag_pos, "pride_flags:wavingflag" )
 
 	obj:get_luaentity( ).node_idx = node_idx
-	obj:set_yaw( facedir_to_yaw[ param2 ] - rad_180 )
+	rotate_flag_by_param2( obj, param2 )
 
 	active_flags[ node_idx ] = obj
 	return obj
@@ -218,6 +233,17 @@ minetest.register_node( "pride_flags:upper_mast", {
 		local node_idx = minetest.hash_node_position( pos )
 		if active_flags[ node_idx ] then
 			active_flags[ node_idx ]:remove( )
+		end
+	end,
+
+	on_rotate = function(pos, node, user, mode, new_param2)
+		if mode == screwdriver.ROTATE_AXIS then
+			return false
+		end
+		local node_idx = minetest.hash_node_position( pos )
+		local aflag = active_flags[ node_idx ]
+		if aflag then
+			rotate_flag_by_param2( aflag, new_param2 )
 		end
 	end,
 } )
