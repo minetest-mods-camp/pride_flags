@@ -127,8 +127,14 @@ minetest.register_entity( "pride_flags:wavingflag", {
 			self.flag_idx = flag_idx
 		end
 
+		-- Fallback flag
+		if not flag_list[ self.flag_idx ] then
+			self.flag_idx = 1
+		end
+
 		local texture = string.format( "prideflag_%s.png", flag_list[ self.flag_idx ] )
 		self.object:set_properties( { textures = { texture } } )
+		return self.flag_idx
 	end,
 
 	get_staticdata = function ( self )
@@ -219,13 +225,21 @@ local function cycle_flag( pos, player, cycle_backwards )
 			flag = aflag:get_luaentity( )
 		end
 		if flag then
+			local flag_idx
 			if cycle_backwards then
-				flag:reset_texture( -1 )
+				flag_idx = flag:reset_texture( -1 )
 			else
-				flag:reset_texture( )
+				flag_idx = flag:reset_texture( )
 			end
+			local meta = minetest.get_meta( pos )
+			meta:set_int("flag_idx", flag_idx)
 		else
-			spawn_flag( pos )
+			flag = spawn_flag( pos )
+			if flag and flag:get_luaentity() then
+				local meta = minetest.get_meta( pos )
+				local flag_idx = meta:get_int("flag_idx")
+				flag:get_luaentity():reset_texture( flag_idx )
+			end
 		end
 	end
 end
@@ -260,7 +274,11 @@ minetest.register_node( "pride_flags:upper_mast", {
 	end,
 
 	on_construct = function ( pos )
-		spawn_flag ( pos )
+		local flag = spawn_flag ( pos )
+		if flag and flag:get_luaentity() then
+			local meta = minetest.get_meta( pos )
+			meta:set_int("flag_idx", flag:get_luaentity().flag_idx)
+		end
 	end,
 
 	on_destruct = function ( pos )
