@@ -26,13 +26,13 @@ local flag_list = {
 	"homoromantic",
 	"biromantic", "polyromantic", "panromantic", "omniromantic",
 	"aromantic", "grayromantic", "demiromantic",
-	-- gender
-	"androgyne", "demigender",
-	"multigender", "agender",
+	-- gender-related
+	"androgyne", "demigender", "maverique", "neutrois",
+	"multigender", "polygender", "pangender", "agender",
 	"genderfluid",
 	-- intersex
 	"intersex",
-	-- non-monogamous
+	-- relationship
 	"polyamorous",
 	-- queer
 	"queer",

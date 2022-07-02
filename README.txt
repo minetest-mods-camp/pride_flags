@@ -40,7 +40,11 @@ These flags are available:
 	* Transgender
 	* Androgyne
 	* Demigender
+	* Maverique
+	* Neutrois
 	* Multigender
+	* Polygender
+	* Pangender
 	* Agender
 	* Genderfluid
 * Sex-related
