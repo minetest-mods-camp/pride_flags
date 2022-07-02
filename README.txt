@@ -12,6 +12,43 @@ conspicuous location, such as atop a building or along a promenade.
 By default, a rainbow pride flag will appear when the upper mast is placed. Right-click 
 the node to select a different flag.
 
+These flags are available:
+
+* Orientations (sexual, romantic or other)
+	* Gay/LGBTQ+ (rainbow flag)
+	* Lesbian
+	* Vincian
+* Sexual orientations
+	* Bisexual
+	* Pansexual
+	* Polysexual
+	* Omnisexual
+	* Asexual
+	* Graysexual
+	* Demisexual
+* Romantic orientations
+	* Homoromantic
+	* Biromantic
+	* Polyromantic
+	* Panromantic
+	* Omniromantic
+	* Aromantic
+	* Grayromantic
+	* Demiromantic
+* Gender-related
+	* Genderqueer
+	* Transgender
+	* Androgyne
+	* Demigender
+	* Multigender
+	* Agender
+	* Genderfluid
+* Sex-related
+	* Intersex
+* Relationships
+	* Polyamorous
+* Queer
+	* Queer
 
 Repository
 ----------------------
