@@ -60,6 +60,20 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		else
 			self.flag_idx = 1
 		end
+
+		-- Delete entity if there is already one for this pos
+		local objs = minetest.get_objects_inside_radius( self.object:get_pos(), 0.5 )
+		for o=1, #objs do
+			local obj = objs[o]
+			local lua = obj:get_luaentity( )
+			local name = lua.name
+			if self ~= lua and name == "pride_flags:wavingflag" then
+				if lua.node_idx == self.node_idx then
+					self.object:remove( )
+					return
+				end
+			end
+		end
 	end,
 
 	on_deactivate = function ( self )
@@ -211,6 +225,9 @@ local function spawn_flag( pos )
 
 	local flag_pos = get_flag_pos( pos, param2 )
 	local obj = minetest.add_entity( flag_pos, "pride_flags:wavingflag" )
+	if not obj or not obj:get_luaentity( ) then
+		return
+	end
 
 	obj:get_luaentity( ).node_idx = node_idx
 	rotate_flag_by_param2( obj, param2 )
