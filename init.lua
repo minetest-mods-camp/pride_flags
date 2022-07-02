@@ -180,6 +180,16 @@ minetest.register_node( "pride_flags:lower_mast", {
 	end,
 } )
 
+local function get_flag_pos( pos, param2 )
+	local facedir_to_pos = {
+		[0] = { x = 0, y = 0.6, z = -0.1 },
+		[1] = { x = -0.1, y = 0.6, z = 0 },
+		[2] = { x = 0, y = 0.6, z = 0.1 },
+		[3] = { x = 0.1, y = 0.6, z = 0 },
+	}
+	return vector.add( pos, vector.multiply( facedir_to_pos[ param2 ], 1 ) )
+end
+
 local function rotate_flag_by_param2( flag, param2 )
 	local facedir_to_yaw = {
 		[0] = rad_90,
@@ -198,14 +208,8 @@ end
 local function spawn_flag( pos )
 	local node_idx = minetest.hash_node_position( pos )
 	local param2 = minetest.get_node( pos ).param2
-	local facedir_to_pos = {
-		[0] = { x = 0, y = 0.6, z = -0.1 },
-		[1] = { x = -0.1, y = 0.6, z = 0 },
-		[2] = { x = 0, y = 0.6, z = 0.1 },
-		[3] = { x = 0.1, y = 0.6, z = 0 },
-	}
 
-	local flag_pos = vector.add( pos, vector.multiply( facedir_to_pos[ param2 ], 1 ) )
+	local flag_pos = get_flag_pos( pos, param2 )
 	local obj = minetest.add_entity( flag_pos, "pride_flags:wavingflag" )
 
 	obj:get_luaentity( ).node_idx = node_idx
@@ -295,7 +299,12 @@ minetest.register_node( "pride_flags:upper_mast", {
 		local node_idx = minetest.hash_node_position( pos )
 		local aflag = active_flags[ node_idx ]
 		if aflag then
+			local lua = aflag:get_luaentity( )
+			local flag_pos_idx = lua.node_idx
+			local flag_pos = minetest.get_position_from_hash( flag_pos_idx )
+			flag_pos = get_flag_pos( flag_pos, new_param2 )
 			rotate_flag_by_param2( aflag, new_param2 )
+			aflag:set_pos( flag_pos )
 		end
 	end,
 } )
