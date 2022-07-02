@@ -114,8 +114,16 @@ minetest.register_entity( "pride_flags:wavingflag", {
 
 	reset_texture = function ( self, flag_idx )
 		if not flag_idx then
+			-- next flag
 			self.flag_idx = self.flag_idx % #flag_list + 1	-- this automatically increments
+		elseif flag_idx == -1 then
+			-- previous flag
+			self.flag_idx = self.flag_idx - 1
+			if self.flag_idx < 1 then
+				self.flag_idx = #flag_list
+			end
 		else
+			-- set flag directly
 			self.flag_idx = flag_idx
 		end
 
@@ -201,6 +209,27 @@ local function spawn_flag( pos )
 	return obj
 end
 
+local function cycle_flag( pos, player, cycle_backwards )
+	local node_idx = minetest.hash_node_position( pos )
+
+	if minetest.check_player_privs( player:get_player_name( ), "server" ) then
+		local aflag = active_flags[ node_idx ]
+		local flag
+		if aflag then
+			flag = aflag:get_luaentity( )
+		end
+		if flag then
+			if cycle_backwards then
+				flag:reset_texture( -1 )
+			else
+				flag:reset_texture( )
+			end
+		else
+			spawn_flag( pos )
+		end
+	end
+end
+
 minetest.register_node( "pride_flags:upper_mast", {
 	description = S("Flag Pole with Flag"),
 	drawtype = "mesh",
@@ -223,20 +252,11 @@ minetest.register_node( "pride_flags:upper_mast", {
         },
 
 	on_rightclick = function ( pos, node, player )
-		local node_idx = minetest.hash_node_position( pos )
+		cycle_flag( pos, player )
+	end,
 
-		if minetest.check_player_privs( player:get_player_name( ), "server" ) then
-			local aflag = active_flags[ node_idx ]
-			local flag
-			if aflag then
-				flag = aflag:get_luaentity( )
-			end
-			if flag then
-				flag:reset_texture( )
-			else
-				spawn_flag( pos )
-			end
-		end
+	on_punch = function ( pos, node, player )
+		cycle_flag( pos, player, -1 )
 	end,
 
 	on_construct = function ( pos )
