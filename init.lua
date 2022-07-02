@@ -54,6 +54,13 @@ minetest.register_entity( "pride_flags:wavingflag", {
 				self.object:remove( )
 				return
 			end
+
+			local aflag = active_flags[ self.node_idx ]
+			if aflag then
+				minetest.log("error", "stop_a")
+				return
+			end
+
 			self:reset_texture( self.flag_idx )
 
 			active_flags[ self.node_idx ] = self.object
@@ -236,6 +243,15 @@ local function spawn_flag( pos )
 	return obj
 end
 
+local function spawn_flag_and_set_meta( pos )
+	local flag = spawn_flag( pos )
+	if flag and flag:get_luaentity() then
+		local meta = minetest.get_meta( pos )
+		local flag_idx = meta:get_int("flag_idx")
+		flag:get_luaentity():reset_texture( flag_idx )
+	end
+end
+
 local function cycle_flag( pos, player, cycle_backwards )
 	local node_idx = minetest.hash_node_position( pos )
 
@@ -255,12 +271,7 @@ local function cycle_flag( pos, player, cycle_backwards )
 			local meta = minetest.get_meta( pos )
 			meta:set_int("flag_idx", flag_idx)
 		else
-			flag = spawn_flag( pos )
-			if flag and flag:get_luaentity() then
-				local meta = minetest.get_meta( pos )
-				local flag_idx = meta:get_int("flag_idx")
-				flag:get_luaentity():reset_texture( flag_idx )
-			end
+			spawn_flag_and_set_meta( pos )
 		end
 	end
 end
@@ -325,3 +336,20 @@ minetest.register_node( "pride_flags:upper_mast", {
 		end
 	end,
 } )
+
+minetest.register_lbm({
+	name = "pride_flags:respawn_flags",
+	label = "Respawn flags",
+	nodenames = {"pride_flags:upper_mast"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		local node_idx = minetest.hash_node_position( pos )
+		local aflag = active_flags[ node_idx ]
+		if aflag then
+			minetest.log("error", "stop")
+			return
+		end
+		spawn_flag_and_set_meta( pos )
+		minetest.log("error", "sp:"..minetest.pos_to_string(pos))
+	end
+})
