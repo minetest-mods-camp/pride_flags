@@ -14,6 +14,13 @@ local rad_90 = pi / 2
 
 local flag_list = { "rainbow", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual" }
 
+local S
+if minetest.get_translator then
+	S = minetest.get_translator("pride_flags")
+else
+	S = function(s) return s end
+end
+
 minetest.register_entity( "pride_flags:wavingflag", {
 	initial_properties = {
 		physical = false,
@@ -110,16 +117,25 @@ minetest.register_entity( "pride_flags:wavingflag", {
 	end,
 } )
 
+local metal_sounds
+if minetest.get_modpath("default") ~= nil then
+	if default.node_sound_metal_defaults then
+		metal_sounds = default.node_sound_metal_defaults()
+	end
+end
+
 minetest.register_node( "pride_flags:lower_mast", {
-        description = "Flag Pole",
+        description = S("Flag Pole"),
         drawtype = "mesh",
         paramtype = "light",
         mesh = "pride_flags_mast_lower.obj",
         paramtype2 = "facedir",
         groups = { cracky = 2, post = 1 },
         tiles = { "pride_flags_baremetal.png", "pride_flags_baremetal.png" },
-	groups = { cracky = 1, level = 2 },
-	--sounds = default.node_sound_metal_defaults( ),
+        wield_image = "pride_flags_pole_bottom_inv.png",
+        inventory_image = "pride_flags_pole_bottom_inv.png",
+        groups = { cracky = 1, level = 2 },
+        sounds = metal_sounds,
 
         selection_box = {
                 type = "fixed",
@@ -132,15 +148,17 @@ minetest.register_node( "pride_flags:lower_mast", {
 } )
 
 minetest.register_node( "pride_flags:upper_mast", {
-	description = "Flag Pole",
+	description = S("Flag Pole with Flag"),
 	drawtype = "mesh",
 	paramtype = "light",
 	mesh = "pride_flags_mast_upper.obj",
 	paramtype2 = "facedir",
 	groups = { cracky = 2 },
 	tiles = { "pride_flags_baremetal.png", "pride_flags_baremetal.png" },
+	wield_image = "pride_flags_pole_top_inv.png",
+	inventory_image = "pride_flags_pole_top_inv.png",
 	groups = { cracky = 1, level = 2 },
-	--sounds = default.node_sound_metal_defaults( ),
+	sounds = metal_sounds,
 
         selection_box = {
                 type = "fixed",
