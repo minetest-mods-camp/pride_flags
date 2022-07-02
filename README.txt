@@ -69,39 +69,6 @@ Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
    /textures/default_baremetal.png
    by sorcerykid
 
-   /textures/prideflag_asexual.png
-   by sorcerykid
-
-   /textures/prideflag_bisexual.png
-   by sorcerykid
-
-   /textures/prideflag_rainbow.png
-   by sorcerykid
-
-   /textures/prideflag_gendercreative.png
-   by sorcerykid
-
-   /textures/prideflag_genderfluid.png
-   by sorcerykid
-
-   /textures/prideflag_genderqueer.png
-   by sorcerykid
-
-   /textures/prideflag_lesbian.png
-   by sorcerykid
-
-   /textures/prideflag_nonbinary.png
-   by sorcerykid
-
-   /textures/prideflag_pansexual.png
-   by sorcerykid
-
-   /textures/prideflag_polysexual.png
-   by sorcerykid
-
-   /textures/prideflag_transgender.png
-   by sorcerykid
-
    /sounds/flagwave1.ogg
    by Chelly01
    obtained from https://freesound.org/people/Chelly01/sounds/541088/
@@ -116,6 +83,21 @@ Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
    by Chelly01
    obtained from https://freesound.org/people/Chelly01/sounds/541088/
    modified by sorcerykid
+
+   Pride flags:
+   All pride flags have a name like "/textures/prideflag_<NAME>.png",
+   where <NAME> is the pride flag name. For example, the rainbow flag
+   is "/textures/prideflag_rainbow.png". These are the current pride flags:
+
+   asexual, bisexual, rainbow, gendercreative, genderfluid, genderqueer,
+   lesbian, nonbinary, pansexual, polysexual, transgender:
+   by sorcerykid
+
+   aromantic, grayromantic, demiromantic, graysexual, demisexual, omnisexual,
+   homoromantic, biromantic, panromantic, polyromantic, omniromantic,
+   vincian, agender, demigender, androgyne, multigender,
+   intersex, polyamorous, queer:
+   by Wuzzy
 
 You are free to:
 Share — copy and redistribute the material in any medium or format.

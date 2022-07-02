@@ -14,7 +14,30 @@ local pi = math.pi
 local rad_180 = pi
 local rad_90 = pi / 2
 
-local flag_list = { "rainbow", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual" }
+local flag_list = {
+	-- original flags (from first version)
+	"rainbow", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual",
+
+	-- sexual orientation
+	"vincian",
+	"polysexual", "omnisexual",
+	"graysexual", "demisexual",
+	-- romantic orientation
+	"homoromantic",
+	"biromantic", "polyromantic", "panromantic", "omniromantic",
+	"aromantic", "grayromantic", "demiromantic",
+	-- gender
+	"genderqueer",
+	"androgyne", "demigender",
+	"multigender", "agender",
+	"genderfluid",
+	-- intersex
+	"intersex",
+	-- non-monogamous
+	"polyamorous",
+	-- queer
+	"queer",
+}
 
 minetest.register_entity( "pride_flags:wavingflag", {
 	initial_properties = {
