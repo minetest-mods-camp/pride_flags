@@ -42,7 +42,7 @@ minetest.register_entity( "pride_flags:wavingflag", {
 	},
 
 	on_activate = function ( self, staticdata, dtime )
-		self:reset_animation( math.random( 1, 50 ) )  -- random starting frame to desynchronize multiple flags
+		self:reset_animation( true )
 		self.object:set_armor_groups( { immortal = 1 } )
 
 		if staticdata ~= "" then
@@ -67,8 +67,7 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		for o=1, #objs do
 			local obj = objs[o]
 			local lua = obj:get_luaentity( )
-			local name = lua.name
-			if self ~= lua and name == "pride_flags:wavingflag" then
+			if lua and self ~= lua and lua.name == "pride_flags:wavingflag" then
 				if lua.node_idx == self.node_idx then
 					self.object:remove( )
 					return
@@ -88,11 +87,11 @@ minetest.register_entity( "pride_flags:wavingflag", {
 
 		if self.anim_timer <= 0 then
 			minetest.sound_stop( self.sound_id )
-			self:reset_animation( 1 )
+			self:reset_animation( )
 		end
 	end,
 
-	reset_animation = function ( self, start_frame )
+	reset_animation = function ( self, initial )
 		local coords = { x = os.time( ) % 65535, y = 0 }
 		local cur_wind
 		if old_get2d then
@@ -104,6 +103,9 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		minetest.log("verbose", "[pride_flags] Current wind: " .. cur_wind)
 		local anim_speed
 		local wave_sound
+
+		cur_wind = math.random(0, 50)
+		cur_wind = 30
 
 		if cur_wind < 10 then
 			anim_speed = 10	-- 2 cycle
@@ -118,13 +120,19 @@ minetest.register_entity( "pride_flags:wavingflag", {
 			anim_speed = 80  -- 16 cycles
 			wave_sound = "pride_flags_flagwave3"
 		end
+		-- slightly anim_speed change to desyncronize flag waving
+		anim_speed = anim_speed + math.random(0, 200) * 0.01
 
 		if self.object then
-			self.object:set_animation( { x = start_frame, y = 575 }, anim_speed, 0, true )
+			if initial or (not self.object.set_animation_frame_speed) then
+				self.object:set_animation( { x = 1, y = 575 }, anim_speed, 0, true )
+			else
+				self.object:set_animation_frame_speed(anim_speed)
+			end
 			self.sound_id = minetest.sound_play( wave_sound, { object = self.object, gain = 1.0, loop = true } )
 		end
 
-		self.anim_timer = ( 576 - start_frame ) / 5  -- default to 115 seconds to reset animation
+		self.anim_timer = 115 + math.random(-10, 10) -- time to reset animation
 	end,
 
 	reset_texture = function ( self, flag_idx )
