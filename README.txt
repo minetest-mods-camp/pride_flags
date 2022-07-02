@@ -137,7 +137,7 @@ Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
    aromantic, grayromantic, demiromantic, graysexual, demisexual, omnisexual,
    homoromantic, biromantic, panromantic, polyromantic, omniromantic,
    vincian, agender, demigender, androgyne, multigender,
-   intersex, polyamorous, queer:
+   intersex, polyamorous, queer, maverique, neutrois, multigender, polygender:
    by Wuzzy
 
 You are free to:
