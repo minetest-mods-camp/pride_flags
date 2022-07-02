@@ -22,7 +22,7 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		collisionbox = { -0.1, -0.85, -0.1, 0.1, 0.85, 0.1 },
 		backface_culling = false,
 		pointable = false,
-		mesh = "wavingflag.b3d",
+		mesh = "pride_flags_wavingflag.b3d",
 		textures = { "prideflag_rainbow.png" },
 		use_texture_alpha = false,
 	},
@@ -71,16 +71,16 @@ minetest.register_entity( "pride_flags:wavingflag", {
 
 		if cur_wind < 10 then
 			anim_speed = 10	-- 2 cycle
-			wave_sound = "flagwave1"
+			wave_sound = "pride_flags_flagwave1"
 		elseif cur_wind < 20 then
 			anim_speed = 20  -- 4 cycles
-			wave_sound = "flagwave1"
+			wave_sound = "pride_flags_flagwave1"
 		elseif cur_wind < 40 then
 			anim_speed = 40  -- 8 cycles
-			wave_sound = "flagwave2"
+			wave_sound = "pride_flags_flagwave2"
 		else
 			anim_speed = 80  -- 16 cycles
-			wave_sound = "flagwave3"
+			wave_sound = "pride_flags_flagwave3"
 		end
 
 		if self.object then
@@ -114,10 +114,10 @@ minetest.register_node( "pride_flags:lower_mast", {
         description = "Flag Pole",
         drawtype = "mesh",
         paramtype = "light",
-        mesh = "mast_lower.obj",
+        mesh = "pride_flags_mast_lower.obj",
         paramtype2 = "facedir",
         groups = { cracky = 2, post = 1 },
-        tiles = { "default_baremetal.png", "default_baremetal.png" },
+        tiles = { "pride_flags_baremetal.png", "pride_flags_baremetal.png" },
 	groups = { cracky = 1, level = 2 },
 	--sounds = default.node_sound_metal_defaults( ),
 
@@ -135,10 +135,10 @@ minetest.register_node( "pride_flags:upper_mast", {
 	description = "Flag Pole",
 	drawtype = "mesh",
 	paramtype = "light",
-	mesh = "mast_upper.obj",
+	mesh = "pride_flags_mast_upper.obj",
 	paramtype2 = "facedir",
 	groups = { cracky = 2 },
-	tiles = { "default_baremetal.png", "default_baremetal.png" },
+	tiles = { "pride_flags_baremetal.png", "pride_flags_baremetal.png" },
 	groups = { cracky = 1, level = 2 },
 	--sounds = default.node_sound_metal_defaults( ),
 

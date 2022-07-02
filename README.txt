@@ -57,16 +57,16 @@ Multimedia License (textures, sounds, and models)
 
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 
-   /models/mast_lower.obj
+   /models/pride_flags_mast_lower.obj
    by sorcerykid
 
-   /models/mast_upper.obj
+   /models/pride_flags_mast_upper.obj
    by sorcerykid
 
-   /models/wavingflag.b3d
+   /models/pride_flags_wavingflag.b3d
    by sorcerykid
 
-   /textures/default_baremetal.png
+   /textures/pride_flags_baremetal.png
    by sorcerykid
 
    /textures/prideflag_asexual.png
@@ -102,17 +102,17 @@ Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
    /textures/prideflag_transgender.png
    by sorcerykid
 
-   /sounds/flagwave1.ogg
+   /sounds/pride_flags_flagwave1.ogg
    by Chelly01
    obtained from https://freesound.org/people/Chelly01/sounds/541088/
    modified by sorcerykid
 
-   /sounds/flagwave2.ogg
+   /sounds/pride_flags_flagwave2.ogg
    by Chelly01
    obtained from https://freesound.org/people/Chelly01/sounds/541088/
    modified by sorcerykid
 
-   /sounds/flagwave3.ogg
+   /sounds/pride_flags_flagwave3.ogg
    by Chelly01
    obtained from https://freesound.org/people/Chelly01/sounds/541088/
    modified by sorcerykid
