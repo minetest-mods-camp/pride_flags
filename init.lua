@@ -3,8 +3,6 @@
 --
 -- See README.txt for licensing and other information.
 -- Copyright (c) 2022, Leslie E. Krause
---
--- ./games/minetest_game/mods/pride_flags/init.lua
 --------------------------------------------------------
 
 local wind_noise = PerlinNoise( 204, 1, 0, 500 )
@@ -67,7 +65,7 @@ minetest.register_entity( "pride_flags:wavingflag", {
 
 	reset_animation = function ( self, start_frame )
 		local cur_wind = wind_noise:get2d( { x = os.time( ) % 65535, y = 0 } ) * 30 + 30
-print( cur_wind )
+		minetest.log("verbose", "[pride_flags] Current wind: " .. cur_wind)
 		local anim_speed
 		local wave_sound
 
