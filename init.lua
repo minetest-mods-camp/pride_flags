@@ -146,6 +146,32 @@ minetest.register_node( "pride_flags:lower_mast", {
         },
 } )
 
+local function spawn_flag( pos )
+	local node_idx = minetest.hash_node_position( pos )
+	local param2 = minetest.get_node( pos ).param2
+	local facedir_to_pos = {
+		[0] = { x = 0, y = 0.6, z = -0.1 },
+		[1] = { x = -0.1, y = 0.6, z = 0 },
+		[2] = { x = 0, y = 0.6, z = 0.1 },
+		[3] = { x = 0.1, y = 0.6, z = 0 },
+	}
+
+	local facedir_to_yaw = {
+		[0] = rad_90,
+		[1] = 0,
+		[2] = -rad_90,
+		[3] = rad_180,
+	}
+	local flag_pos = vector.add( pos, vector.multiply( facedir_to_pos[ param2 ], 1 ) )
+	local obj = minetest.add_entity( flag_pos, "pride_flags:wavingflag" )
+
+	obj:get_luaentity( ).node_idx = node_idx
+	obj:set_yaw( facedir_to_yaw[ param2 ] - rad_180 )
+
+	active_flags[ node_idx ] = obj
+	return obj
+end
+
 minetest.register_node( "pride_flags:upper_mast", {
 	description = S("Flag Pole with Flag"),
 	drawtype = "mesh",
@@ -171,33 +197,21 @@ minetest.register_node( "pride_flags:upper_mast", {
 		local node_idx = minetest.hash_node_position( pos )
 
 		if minetest.check_player_privs( player:get_player_name( ), "server" ) then
-			active_flags[ node_idx ]:get_luaentity( ):reset_texture( )
+			local aflag = active_flags[ node_idx ]
+			local flag
+			if aflag then
+				flag = aflag:get_luaentity( )
+			end
+			if flag then
+				flag:reset_texture( )
+			else
+				spawn_flag( pos )
+			end
 		end
 	end,
 
 	on_construct = function ( pos )
-		local node_idx = minetest.hash_node_position( pos )
-		local param2 = minetest.get_node( pos ).param2
-		local facedir_to_pos = {
-			[0] = { x = 0, y = 0.6, z = -0.1 },
-			[1] = { x = -0.1, y = 0.6, z = 0 },
-			[2] = { x = 0, y = 0.6, z = 0.1 },
-			[3] = { x = 0.1, y = 0.6, z = 0 },
-		}
-
-		local facedir_to_yaw = {
-			[0] = rad_90,
-			[1] = 0,
-			[2] = -rad_90,
-			[3] = rad_180,
-		}
-		local flag_pos = vector.add( pos, vector.multiply( facedir_to_pos[ param2 ], 1 ) )
-		local obj = minetest.add_entity( flag_pos, "pride_flags:wavingflag" )
-
-		obj:get_luaentity( ).node_idx = node_idx
-		obj:set_yaw( facedir_to_yaw[ param2 ] - rad_180 )
-
-		active_flags[ node_idx ] = obj
+		spawn_flag ( pos )
 	end,
 
 	on_destruct = function ( pos )
