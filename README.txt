@@ -1,7 +1,7 @@
 Pride Flags Mod v1.0
 By Leslie E. Krause
 
-Pride Flags adds a variety of eight animated flags to celebrate pride in Minetest.
+Pride Flags adds a variety of animated flags to celebrate pride in Minetest.
 
 The flags and poles are non-craftable and intended for placement by an administrator in a
 conspicuous location, such as atop a building or along a promenade.
