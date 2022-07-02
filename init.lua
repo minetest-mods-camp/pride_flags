@@ -27,7 +27,6 @@ local flag_list = {
 	"biromantic", "polyromantic", "panromantic", "omniromantic",
 	"aromantic", "grayromantic", "demiromantic",
 	-- gender
-	"genderqueer",
 	"androgyne", "demigender",
 	"multigender", "agender",
 	"genderfluid",
