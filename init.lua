@@ -325,7 +325,7 @@ minetest.register_node( "pride_flags:upper_mast", {
         },
         collision_box = {
                 type = "fixed",
-                fixed = { { -3/32, -1/2, -3/32, 3/32, 27/16, 3/32 } },
+                fixed = { { -3/32, -1/2, -3/32, 3/32, 1/5, 3/32 } },
         },
 
 	on_rightclick = function ( pos, node, player )
@@ -342,12 +342,29 @@ minetest.register_node( "pride_flags:upper_mast", {
 			local meta = minetest.get_meta( pos )
 			meta:set_int("flag_idx", flag:get_luaentity().flag_idx)
 		end
+
+		local above1 = {x=pos.x, y=pos.y+1, z=pos.z}
+		local above2 = {x=pos.x, y=pos.y+2, z=pos.z}
+		local param2 = minetest.get_node( pos ).param2
+		minetest.set_node( above1, { name = "pride_flags:upper_mast_hidden_1" } )
+		minetest.set_node( above2, { name = "pride_flags:upper_mast_hidden_2" } )
 	end,
 
 	on_destruct = function ( pos )
 		local node_idx = minetest.hash_node_position( pos )
 		if active_flags[ node_idx ] then
 			active_flags[ node_idx ]:remove( )
+		end
+	end,
+
+	after_destruct = function( pos )
+		local above1 = {x=pos.x, y=pos.y+1, z=pos.z}
+		local above2 = {x=pos.x, y=pos.y+2, z=pos.z}
+		if minetest.get_node( above1 ).name == "pride_flags:upper_mast_hidden_1" then
+			minetest.remove_node( above1 )
+		end
+		if minetest.get_node( above2 ).name == "pride_flags:upper_mast_hidden_2" then
+			minetest.remove_node( above2 )
 		end
 	end,
 
@@ -408,4 +425,45 @@ minetest.register_craft({
 		{"pride_flags:lower_mast", "group:wool", "group:wool"},
 		{"pride_flags:lower_mast", "group:wool", "group:wool"},
 	},
+})
+
+-- Add 2 hidden upper mast segments to block all the nodes
+-- the upper mast occupies. This is also needed to prevent
+-- collision issues with overhigh nodes.
+-- These nodes will be automatically
+-- added/removed when the upper mast is constructed
+-- or destructed.
+minetest.register_node( "pride_flags:upper_mast_hidden_1", {
+	drawtype = "airlike",
+	pointable = false,
+	paramtype = "light",
+	sunlight_propagates = true,
+	wield_image = "pride_flags_pole_hidden1_inv.png",
+	inventory_image = "pride_flags_pole_hidden1_inv.png",
+	groups = { not_in_creative_inventory = 1 },
+	sounds = metal_sounds,
+        collision_box = {
+                type = "fixed",
+                fixed = { { -3/32, -1/2, -3/32, 3/32, 1/5, 3/32 } },
+        },
+	on_blast = function()
+		return
+	end,
+})
+minetest.register_node( "pride_flags:upper_mast_hidden_2", {
+	drawtype = "airlike",
+	pointable = false,
+	paramtype = "light",
+	sunlight_propagates = true,
+	wield_image = "pride_flags_pole_hidden2_inv.png",
+	inventory_image = "pride_flags_pole_hidden2_inv.png",
+	groups = { not_in_creative_inventory = 1 },
+	sounds = metal_sounds,
+        collision_box = {
+                type = "fixed",
+                fixed = { { -3/32, -1/2, -3/32, 3/32, -5/16, 3/32 } },
+        },
+	on_blast = function()
+		return
+	end,
 })
