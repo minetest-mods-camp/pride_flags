@@ -3,14 +3,14 @@ By Leslie E. Krause
 
 Pride Flags adds a variety of animated flags to celebrate pride in Minetest.
 
-The flags and poles are non-craftable and intended for placement by an administrator in a
-conspicuous location, such as atop a building or along a promenade.
+This adds two blocks:
 
-  /giveme pride_flags:mast_lower
-  /giveme pride_flags:mast_upper
+* Flag Pole: for the lower section
+* Flag Pole with Flag: For the top of the flag pole with a flag attached.
+                       Note: It occupies 3 blocks vertically.
 
-Initially, the rainbow pride flag will appear when the upper mast is placed.
-Right-click or punch the node to select a different flag.
+Initially, the rainbow pride flag will appear when the Flag Pole with Flag is placed.
+Right-click or punch it to select a different flag.
 
 These flags are available:
 

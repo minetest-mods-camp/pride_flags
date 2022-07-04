@@ -336,18 +336,83 @@ minetest.register_node( "pride_flags:upper_mast", {
 		cycle_flag( pos, player, -1 )
 	end,
 
+	node_placement_prediction = "",
+
+	on_place = function( itemstack, placer, pointed_thing )
+		if not pointed_thing.type == "node" then
+			return itemstack
+		end
+
+		local node = minetest.get_node(pointed_thing.under)
+		local pdef = minetest.registered_nodes[node.name]
+		if pdef and pdef.on_rightclick and
+				not placer:get_player_control().sneak then
+			return pdef.on_rightclick(pointed_thing.under,
+					node, placer, itemstack, pointed_thing)
+		end
+
+		local pos
+		if pdef and pdef.buildable_to then
+			pos = pointed_thing.under
+		else
+			pos = pointed_thing.above
+			node = minetest.get_node(pos)
+			pdef = minetest.registered_nodes[node.name]
+			if not pdef or not pdef.buildable_to then
+				return itemstack
+			end
+		end
+
+		local above1 = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local above2 = {x = pos.x, y = pos.y + 2, z = pos.z}
+		local anode1 = minetest.get_node_or_nil(above1)
+		local anode2 = minetest.get_node_or_nil(above2)
+		local adef1 = anode1 and minetest.registered_nodes[anode1.name]
+		local adef2 = anode2 and minetest.registered_nodes[anode2.name]
+
+		-- Don't build if upper nodes are blocked, unless it's a hidden node
+		if not adef1 or (not adef1.buildable_to and anode1.name ~= "pride_flags:upper_mast_hidden_1") then
+			return itemstack
+		end
+		if not adef2 or (not adef2.buildable_to and anode2.name ~= "pride_flags:upper_mast_hidden_2") then
+			return itemstack
+		end
+
+		local pn = placer:get_player_name()
+		if minetest.is_protected(pos, pn) then
+			minetest.record_protection_violation(pos, pn)
+			return itemstack
+		elseif minetest.is_protected(above1, pn) then
+			minetest.record_protection_violation(above1, pn)
+			return itemstack
+		elseif minetest.is_protected(above2, pn) then
+			minetest.record_protection_violation(above2, pn)
+			return itemstack
+		end
+
+		local yaw = placer:get_look_horizontal( )
+		local dir = minetest.yaw_to_dir( yaw )
+		local param2 = (minetest.dir_to_facedir( dir ) + 3) % 4
+		minetest.set_node(pos, {name = "pride_flags:upper_mast", param2 = param2 })
+		minetest.set_node(above1, {name = "pride_flags:upper_mast_hidden_1"})
+		minetest.set_node(above2, {name = "pride_flags:upper_mast_hidden_2"})
+
+		if not (minetest.is_creative_enabled(pn)) then
+			itemstack:take_item()
+		end
+
+		local def = minetest.registered_nodes["pride_flags:upper_mast"]
+		minetest.sound_play(def.sounds.place, {pos = pos}, true)
+
+		return itemstack
+	end,
+
 	on_construct = function ( pos )
 		local flag = spawn_flag ( pos )
 		if flag and flag:get_luaentity() then
 			local meta = minetest.get_meta( pos )
 			meta:set_int("flag_idx", flag:get_luaentity().flag_idx)
 		end
-
-		local above1 = {x=pos.x, y=pos.y+1, z=pos.z}
-		local above2 = {x=pos.x, y=pos.y+2, z=pos.z}
-		local param2 = minetest.get_node( pos ).param2
-		minetest.set_node( above1, { name = "pride_flags:upper_mast_hidden_1" } )
-		minetest.set_node( above2, { name = "pride_flags:upper_mast_hidden_2" } )
 	end,
 
 	on_destruct = function ( pos )
