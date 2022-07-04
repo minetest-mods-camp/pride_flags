@@ -33,7 +33,7 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		physical = false,
 		visual = "mesh",
 		visual_size = { x = 8.5, y = 8.5 },
-		collisionbox = { -0.1, -0.85, -0.1, 0.1, 0.85, 0.1 },
+		collisionbox = { 0, 0, 0, 0, 0, 0 },
 		backface_culling = false,
 		pointable = false,
 		mesh = "pride_flags_wavingflag.b3d",
