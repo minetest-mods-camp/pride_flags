@@ -363,3 +363,21 @@ minetest.register_lbm({
 		spawn_flag_and_set_texture( pos )
 	end
 })
+
+if minetest.get_modpath("default") then
+	minetest.register_craft({
+		output = "pride_flags:lower_mast 6",
+		recipe = {
+			{"default:steel_ingot"},
+			{"default:steel_ingot"},
+			{"default:steel_ingot"},
+		},
+	})
+end
+minetest.register_craft({
+	output = "pride_flags:upper_mast",
+	recipe = {
+		{"pride_flags:lower_mast", "group:wool", "group:wool"},
+		{"pride_flags:lower_mast", "group:wool", "group:wool"},
+	},
+})
