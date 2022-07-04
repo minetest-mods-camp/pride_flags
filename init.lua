@@ -184,7 +184,7 @@ minetest.register_node( "pride_flags:lower_mast", {
         tiles = { "pride_flags_baremetal.png", "pride_flags_baremetal.png" },
         wield_image = "pride_flags_pole_bottom_inv.png",
         inventory_image = "pride_flags_pole_bottom_inv.png",
-        groups = { cracky = 1, level = 2 },
+        groups = { cracky = 2 },
         sounds = metal_sounds,
 
         selection_box = {
@@ -293,7 +293,7 @@ minetest.register_node( "pride_flags:upper_mast", {
 	tiles = { "pride_flags_baremetal.png", "pride_flags_baremetal.png" },
 	wield_image = "pride_flags_pole_top_inv.png",
 	inventory_image = "pride_flags_pole_top_inv.png",
-	groups = { cracky = 1, level = 2 },
+	groups = { cracky = 2 },
 	sounds = metal_sounds,
 
         selection_box = {
