@@ -256,26 +256,31 @@ local function spawn_flag_and_set_texture( pos )
 end
 
 local function cycle_flag( pos, player, cycle_backwards )
+	local pname = player:get_player_name( )
+	if minetest.is_protected( pos, pname ) and not 
+			minetest.check_player_privs( pname, "protection_bypass") then
+		minetest.register_protection_violation( pos, pname )
+		return
+	end
+
 	local node_idx = minetest.hash_node_position( pos )
 
-	if minetest.check_player_privs( player:get_player_name( ), "server" ) then
-		local aflag = active_flags[ node_idx ]
-		local flag
-		if aflag then
-			flag = aflag:get_luaentity( )
-		end
-		if flag then
-			local flag_idx
-			if cycle_backwards then
-				flag_idx = flag:reset_texture( -1 )
-			else
-				flag_idx = flag:reset_texture( )
-			end
-			local meta = minetest.get_meta( pos )
-			meta:set_int("flag_idx", flag_idx)
+	local aflag = active_flags[ node_idx ]
+	local flag
+	if aflag then
+		flag = aflag:get_luaentity( )
+	end
+	if flag then
+		local flag_idx
+		if cycle_backwards then
+			flag_idx = flag:reset_texture( -1 )
 		else
-			spawn_flag_and_set_texture( pos )
+			flag_idx = flag:reset_texture( )
 		end
+		local meta = minetest.get_meta( pos )
+		meta:set_int("flag_idx", flag_idx)
+	else
+		spawn_flag_and_set_texture( pos )
 	end
 end
 

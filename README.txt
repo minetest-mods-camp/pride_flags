@@ -10,8 +10,7 @@ conspicuous location, such as atop a building or along a promenade.
   /giveme pride_flags:mast_upper
 
 Initially, the rainbow pride flag will appear when the upper mast is placed.
-Right-click or punch the node to select a different flag
-(this requires the "server" privilege).
+Right-click or punch the node to select a different flag.
 
 
 Repository
