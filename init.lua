@@ -209,6 +209,7 @@ minetest.register_node( "pride_flags:lower_mast", {
         inventory_image = "pride_flags_pole_bottom_inv.png",
         groups = { cracky = 2 },
         sounds = metal_sounds,
+	is_ground_content = false,
 
         selection_box = {
                 type = "fixed",
@@ -318,6 +319,7 @@ minetest.register_node( "pride_flags:upper_mast", {
 	inventory_image = "pride_flags_pole_top_inv.png",
 	groups = { cracky = 2 },
 	sounds = metal_sounds,
+	is_ground_content = false,
 
         selection_box = {
                 type = "fixed",
@@ -511,9 +513,12 @@ minetest.register_node( "pride_flags:upper_mast_hidden_1", {
                 type = "fixed",
                 fixed = { { -3/32, -1/2, -3/32, 3/32, 1/5, 3/32 } },
         },
-	on_blast = function()
-		return
-	end,
+	is_ground_content = false,
+	on_blast = function() end,
+	can_dig = function() return false end,
+	drop = "",
+	diggable = false,
+	floodable = false,
 })
 minetest.register_node( "pride_flags:upper_mast_hidden_2", {
 	drawtype = "airlike",
@@ -528,7 +533,11 @@ minetest.register_node( "pride_flags:upper_mast_hidden_2", {
                 type = "fixed",
                 fixed = { { -3/32, -1/2, -3/32, 3/32, -5/16, 3/32 } },
         },
-	on_blast = function()
-		return
-	end,
+	is_ground_content = false,
+
+	on_blast = function() end,
+	can_dig = function() return false end,
+	drop = "",
+	diggable = false,
+	floodable = false,
 })
