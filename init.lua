@@ -86,7 +86,6 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		self.anim_timer = self.anim_timer - dtime
 
 		if self.anim_timer <= 0 then
-			minetest.sound_stop( self.sound_id )
 			self:reset_animation( )
 		end
 	end,
@@ -129,6 +128,8 @@ minetest.register_entity( "pride_flags:wavingflag", {
 			else
 				self.object:set_animation_frame_speed(anim_speed)
 			end
+		end
+		if not self.sound_id then
 			self.sound_id = minetest.sound_play( wave_sound, { object = self.object, gain = 1.0, loop = true } )
 		end
 
