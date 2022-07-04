@@ -1,5 +1,5 @@
 Pride Flags Mod v1.0
-By Leslie E. Krause
+By Leslie E. Krause and Wuzzy
 
 Pride Flags adds a variety of animated flags to celebrate pride in Minetest.
 
@@ -67,7 +67,10 @@ Download archive...
 Compatability
 ----------------------
 
-Minetest 0.4.15+ required
+Minetest 5.4.0 or later required.
+
+(older versions might work, too, but they flag waving sound
+is buggy)
 
 Installation
 ----------------------
