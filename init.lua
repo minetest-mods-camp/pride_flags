@@ -19,6 +19,9 @@ local pi = math.pi
 local rad_180 = pi
 local rad_90 = pi / 2
 
+-- List of flags
+-- !!! IMPORTANT !!!
+-- !!! Always append new flags to the end to ensure backwards-compability.
 local flag_list = {
 	-- original flags (from first version)
 	"rainbow", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual",
