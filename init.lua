@@ -330,7 +330,7 @@ minetest.register_node( "pride_flags:upper_mast", {
         },
         collision_box = {
                 type = "fixed",
-                fixed = { { -3/32, -1/2, -3/32, 3/32, 1/5, 3/32 } },
+                fixed = { { -3/32, -1/2, -3/32, 3/32, 1/2, 3/32 } },
         },
 
 	on_rightclick = function ( pos, node, player )
