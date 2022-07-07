@@ -44,6 +44,8 @@ local flag_list = {
 	"polyamorous",
 	-- queer
 	"queer",
+	-- more genders
+	"demigirl", "demiboy", "bigender", "trigender",
 }
 
 local S
