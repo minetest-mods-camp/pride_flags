@@ -183,15 +183,9 @@ minetest.register_entity( "pride_flags:wavingflag", {
 	end,
 
 	reset_animation = function ( self, initial )
-		local coords = { x = os.time( ) % 65535, y = 0 }
-		local cur_wind
-		if old_get2d then
-			cur_wind = wind_noise:get2d(coords)
-		else
-			cur_wind = wind_noise:get_2d(coords)
-		end
-		cur_wind = cur_wind * 30 + 30
-		minetest.log("verbose", "[pride_flags] Current wind: " .. cur_wind)
+		local pos = self.object:get_pos( )
+		local cur_wind = pride_flags.get_wind( pos )
+		minetest.log("verbose", "[pride_flags] Current wind at "..minetest.pos_to_string(pos, 1)..": " .. cur_wind)
 		local anim_speed
 		local wave_sound
 
@@ -678,4 +672,19 @@ pride_flags.get_flag_at = function( pos )
 	end
 end
 
+-- Returns the wind strength at pos.
+-- Can be overwritten by mods.
+pride_flags.get_wind = function( pos )
+	-- The default wind function ignores pos.
+	-- Returns a wind between ca. 0 and 55
+	local coords = { x = os.time( ) % 65535, y = 0 }
+	local cur_wind
+	if old_get2d then
+		cur_wind = wind_noise:get2d(coords)
+	else
+		cur_wind = wind_noise:get_2d(coords)
+	end
+	cur_wind = cur_wind * 30 + 30
+	return cur_wind
+end
 
