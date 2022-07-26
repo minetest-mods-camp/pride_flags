@@ -80,14 +80,14 @@ for f=1, #flag_list do
 	prev_flag[name1] = name0
 end
 local get_next_flag = function(current_flag_name)
-	if not current_flag_name then
+	if not current_flag_name or not next_flag[ current_flag_name ] then
 		return DEFAULT_FLAG
 	else
 		return next_flag[current_flag_name]
 	end
 end
 local get_prev_flag = function(current_flag_name)
-	if not current_flag_name then
+	if not current_flag_name or not prev_flag[ current_flag_name ] then
 		return DEFAULT_FLAG
 	else
 		return prev_flag[current_flag_name]
