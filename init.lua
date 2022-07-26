@@ -195,9 +195,6 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		local anim_speed
 		local wave_sound
 
-		cur_wind = math.random(0, 50)
-		cur_wind = 30
-
 		if cur_wind < 10 then
 			anim_speed = 10	-- 2 cycle
 			wave_sound = "pride_flags_flagwave1"
