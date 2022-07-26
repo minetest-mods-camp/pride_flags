@@ -1,4 +1,4 @@
-Pride Flags Mod v2.0.0
+Pride Flags Mod v2.0.1
 By Leslie E. Krause and Wuzzy
 
 Pride Flags adds a variety of animated flags to celebrate Pride in Minetest.
