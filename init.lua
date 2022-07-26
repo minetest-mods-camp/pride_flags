@@ -19,34 +19,80 @@ local pi = math.pi
 local rad_180 = pi
 local rad_90 = pi / 2
 
--- List of flags
--- !!! IMPORTANT !!!
--- !!! Always append new flags to the end to ensure backwards-compability.
-local flag_list = {
-	-- original flags (from first version)
-	"rainbow", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual",
+-- This flag is used as the default or fallback in case of error/missing data
+local DEFAULT_FLAG = "rainbow"
 
-	-- sexual orientation
-	"vincian",
-	"polysexual", "omnisexual",
-	"graysexual", "demisexual",
-	-- romantic orientation
+-- Flag list for the old number-based storing of flags, used up to
+-- 8fd4f9661e123bc84c0499c4809537e8aeb24c3b. Do not change this list!
+local legacy_flag_list = {
+	"rainbow", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual",
+	"vincian", "polysexual", "omnisexual", "graysexual", "demisexual", "homoromantic", "biromantic",
+	"polyromantic", "panromantic", "omniromantic", "aromantic", "grayromantic", "demiromantic",
+	"androgyne", "demigender", "maverique", "neutrois", "multigender", "polygender", "pangender", "agender",
+	"genderfluid", "intersex", "polyamorous", "queer", "demigirl", "demiboy", "bigender", "trigender",
+}
+local flag_list = {
+	-- rainbow flag / LGBT+ Pride flag / Gay Pride flag
+	"rainbow",
+	-- orientations (general)
+	"lesbian", "vincian",
+	-- sexual orientations
+	"bisexual", "pansexual", "polysexual", "omnisexual",  -- m-spec
+	"asexual", "graysexual", "demisexual", -- a-spec
+	-- romantic orientations
 	"homoromantic",
-	"biromantic", "polyromantic", "panromantic", "omniromantic",
-	"aromantic", "grayromantic", "demiromantic",
+	"biromantic", "polyromantic", "panromantic", "omniromantic", -- m-spec
+	"aromantic", "grayromantic", "demiromantic", -- a-spec
 	-- gender-related
-	"androgyne", "demigender", "maverique", "neutrois",
-	"multigender", "polygender", "pangender", "agender",
+	---- umbrella terms
+	"transgender", "genderqueer", "nonbinary",
+	---- identities that refer to 0 or multiple genders
+	"multigender", "polygender", "pangender",
+	"agender", "bigender", "trigender",
+	---- identities that refer to a specific gender
+	"demigender", "demigirl", "demiboy",
+	"androgyne", "maverique", "neutrois",
+	---- genderfluid
 	"genderfluid",
-	-- intersex
+	-- sex-related
 	"intersex",
 	-- relationship
 	"polyamorous",
 	-- queer
-	"queer",
-	-- more genders
-	"demigirl", "demiboy", "bigender", "trigender",
-}
+	"queer",}
+
+local next_flag = {}
+local prev_flag = {}
+for f=1, #flag_list do
+	local name1 = flag_list[f]
+	local name0, name2
+	if f < #flag_list then
+		name2 = flag_list[f+1]
+	else
+		name2 = flag_list[1]
+	end
+	if f == 1 then
+		name0 = flag_list[#flag_list]
+	else
+		name0 = flag_list[f-1]
+	end
+	next_flag[name1] = name2
+	prev_flag[name1] = name0
+end
+local get_next_flag = function(current_flag_name)
+	if not current_flag_name then
+		return DEFAULT_FLAG
+	else
+		return next_flag[current_flag_name]
+	end
+end
+local get_prev_flag = function(current_flag_name)
+	if not current_flag_name then
+		return DEFAULT_FLAG
+	else
+		return prev_flag[current_flag_name]
+	end
+end
 
 local S
 if minetest.get_translator then
@@ -74,19 +120,28 @@ minetest.register_entity( "pride_flags:wavingflag", {
 
 		if staticdata ~= "" then
 			local data = minetest.deserialize( staticdata )
-			self.flag_idx = data.flag_idx
+			if data.flag_name then
+				self.flag_name = data.flag_name
+			else
+				-- Convert legacy flag number to flag name
+				local flag_idx = data.flag_idx
+				self.flag_name = legacy_flag_list[ flag_idx ]
+				if not self.flag_name then
+					self.flag_name = DEFAULT_FLAG
+				end
+			end
 			self.node_idx = data.node_idx
 
-			if not self.flag_idx or not self.node_idx then
+			if not self.flag_name or not self.node_idx then
 				self.object:remove( )
 				return
 			end
 
-			self:reset_texture( self.flag_idx )
+			self:reset_texture( self.flag_name )
 
 			active_flags[ self.node_idx ] = self.object
 		else
-			self.flag_idx = 1
+			self.flag_name = DEFAULT_FLAG
 		end
 
 		-- Delete entity if there is already one for this pos
@@ -163,35 +218,24 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		self.anim_timer = 115 + math.random(-10, 10) -- time to reset animation
 	end,
 
-	reset_texture = function ( self, flag_idx )
-		if not flag_idx then
-			-- next flag
-			self.flag_idx = self.flag_idx % #flag_list + 1	-- this automatically increments
-		elseif flag_idx == -1 then
-			-- previous flag
-			self.flag_idx = self.flag_idx - 1
-			if self.flag_idx < 1 then
-				self.flag_idx = #flag_list
-			end
+	reset_texture = function ( self, flag_name, nextprev )
+		if nextprev == 1 then
+			self.flag_name = get_next_flag(self.flag_name)
+		elseif nextprev == -1 then
+			self.flag_name = get_prev_flag(self.flag_name)
 		else
-			-- set flag directly
-			self.flag_idx = flag_idx
+			self.flag_name = flag_name
 		end
 
-		-- Fallback flag
-		if not flag_list[ self.flag_idx ] then
-			self.flag_idx = 1
-		end
-
-		local texture = string.format( "prideflag_%s.png", flag_list[ self.flag_idx ] )
+		local texture = string.format( "prideflag_%s.png", self.flag_name )
 		self.object:set_properties( { textures = { texture } } )
-		return self.flag_idx
+		return self.flag_name
 	end,
 
 	get_staticdata = function ( self )
 		return minetest.serialize( {
 			node_idx = self.node_idx,
-			flag_idx = self.flag_idx,
+			flag_name = self.flag_name,
 		} )
 	end,
 } )
@@ -278,15 +322,25 @@ local function spawn_flag_and_set_texture( pos )
 	local flag = spawn_flag( pos )
 	if flag and flag:get_luaentity() then
 		local meta = minetest.get_meta( pos )
-		local flag_idx = meta:get_int("flag_idx")
-		flag:get_luaentity():reset_texture( flag_idx )
+		local flag_name = meta:get_string("flag_name")
+		if flag_name == "" then
+			-- Convert legacy flag number to flag name
+			local flag_idx = meta:get_int("flag_idx")
+			flag_name = legacy_flag_list[flag_idx]
+			if not flag_name then
+				flag_name = DEFAULT_FLAG
+			end
+			meta:set_string("flag_idx", "")
+			meta:set_string("flag_name", flag_name)
+		end
+		flag:get_luaentity():reset_texture( flag_name )
 	end
 	return flag
 end
 
 local function cycle_flag( pos, player, cycle_backwards )
 	local pname = player:get_player_name( )
-	if minetest.is_protected( pos, pname ) and not 
+	if minetest.is_protected( pos, pname ) and not
 			minetest.check_player_privs( pname, "protection_bypass") then
 		minetest.register_protection_violation( pos, pname )
 		return
@@ -300,14 +354,14 @@ local function cycle_flag( pos, player, cycle_backwards )
 		flag = aflag:get_luaentity( )
 	end
 	if flag then
-		local flag_idx
+		local flag_name
 		if cycle_backwards then
-			flag_idx = flag:reset_texture( -1 )
+			flag_name = flag:reset_texture( nil, -1 )
 		else
-			flag_idx = flag:reset_texture( )
+			flag_name = flag:reset_texture( nil, 1 )
 		end
 		local meta = minetest.get_meta( pos )
-		meta:set_int("flag_idx", flag_idx)
+		meta:set_string("flag_name", flag_name)
 	else
 		spawn_flag_and_set_texture( pos )
 	end
@@ -418,7 +472,7 @@ minetest.register_node( "pride_flags:upper_mast", {
 		local flag = spawn_flag ( pos )
 		if flag and flag:get_luaentity() then
 			local meta = minetest.get_meta( pos )
-			meta:set_int("flag_idx", flag:get_luaentity().flag_idx)
+			meta:set_string("flag_name", flag:get_luaentity().flag_name)
 		end
 	end,
 
