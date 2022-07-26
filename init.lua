@@ -464,7 +464,9 @@ minetest.register_node( "pride_flags:upper_mast", {
 		end
 
 		local def = minetest.registered_nodes["pride_flags:upper_mast"]
-		minetest.sound_play(def.sounds.place, {pos = pos}, true)
+		if def and def.sounds then
+			minetest.sound_play(def.sounds.place, {pos = pos}, true)
+		end
 
 		return itemstack
 	end,
