@@ -2,7 +2,7 @@
 -- Minetest :: Pride Flags Mod (pride_flags)
 --
 -- See README.txt for licensing and other information.
--- Copyright (c) 2022, Leslie E. Krause
+-- Copyright (c) 2022, Leslie E. Krause and Wuzzy
 --------------------------------------------------------
 
 pride_flags = {}
