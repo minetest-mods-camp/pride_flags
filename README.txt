@@ -108,7 +108,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU Lesser General Public License for more details.
 
-http://www.gnu.org/licenses/lgpl-2.1.html
+http://www.gnu.org/licenses/lgpl-3.0.html
 
 
 Multimedia License (textures, sounds, and models)
