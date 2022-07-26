@@ -1,17 +1,32 @@
 Pride Flags Mod v1.0
 By Leslie E. Krause and Wuzzy
 
-Pride Flags adds a variety of animated flags to celebrate pride in Minetest.
+Pride Flags adds a variety of animated flags to celebrate Pride in Minetest.
 
 This adds two blocks:
 
-* Flag Pole: for the lower section
+* Flag Pole: For the lower section
 * Flag Pole with Flag: For the top of the flag pole with a flag attached.
                        Note: It occupies 3 blocks vertically.
 
 Initially, the rainbow pride flag will appear when the Flag Pole with Flag is placed.
-Right-click or punch it to select a different flag.
+Use the 'place' or 'punch' key while pointing to the flag pole to select a different flag.
 
+There are functions for programmers (see below) to add custom flags as well.
+
+What are pride flags?
+---------------------
+Pride flags are flags created by LGBTQ+ people to represent themselves.
+The rainbow flag is the most well-known flag and is understood as
+the symbol for the whole LGBTQ+ community. Additionally, flags for
+specific groups (like lesbian, bisexual, trans, etc.), exist, too.
+
+Pride flags can be used by people in that community but also
+by people outside of it to show support and acceptance, and to
+spread awareness.
+
+List of flags
+--------------------
 These flags are available:
 
 * Orientations (sexual, romantic or other)
@@ -63,19 +78,14 @@ Repository
 ----------------------
 
 Browse source code...
-  https://bitbucket.org/sorcerykid/pride_flags
-
-Download archive...
-  https://bitbucket.org/sorcerykid/pride_flags/get/master.zip
-  https://bitbucket.org/sorcerykid/pride_flags/get/master.tar.gz
+  https://codeberg.org/Wuzzy/pride_flags
 
 Compatability
 ----------------------
 
 Minetest 5.4.0 or later required.
 
-(older versions might work, too, but they flag waving sound
-is buggy)
+(older versions might work, too, but the flag waving sound is buggy)
 
 Installation
 ----------------------
@@ -88,7 +98,7 @@ Source Code License
 
 GNU Lesser General Public License v3 (LGPL-3.0)
 
-Copyright (c) 2022, Leslie E. Krause (leslie@searstower.org)
+Copyright (c) 2022, Leslie E. Krause <leslie@searstower.org> and Wuzzy <Wuzzy@disroot.org>
 
 This program is free software; you can redistribute it and/or modify it under the terms of
 the GNU Lesser General Public License as published by the Free Software Foundation; either
