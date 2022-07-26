@@ -535,6 +535,25 @@ minetest.register_lbm({
 	end
 })
 
+minetest.register_lbm({
+	name = "pride_flags:update_node_meta",
+	label = "Update mast node meta",
+	nodenames = {"pride_flags:upper_mast"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = minetest.get_meta( pos )
+		local flag_idx = meta:get_int("flag_idx")
+		if flag_idx ~= 0 then
+			local flag_name = legacy_flag_list[ flag_idx ]
+			if not flag_name then
+				flag_name = DEFAULT_FLAG
+			end
+			meta:set_string("flag_idx", "")
+			meta:set_string("flag_name", flag_name)
+		end
+	end
+})
+
 if minetest.get_modpath("default") then
 	minetest.register_craft({
 		output = "pride_flags:lower_mast 6",
