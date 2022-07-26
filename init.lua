@@ -111,6 +111,18 @@ else
 	S = function(s) return s end
 end
 
+-- Delete entity if there is no flag mast node
+local delete_if_orphan = function( self )
+	local pos = self.object:get_pos( )
+	local node = minetest.get_node({x=pos.x,y=pos.y-1,z=pos.z})
+	if node.name ~= "pride_flags:upper_mast" and node.name ~= "ignore" then
+		minetest.log("action", "[pride_flags] Orphan flag entity removed at "..minetest.pos_to_string(pos, 1))
+		self.object:remove( )
+		return true
+	end
+	return false
+end
+
 minetest.register_entity( "pride_flags:wavingflag", {
 	initial_properties = {
 		physical = false,
@@ -125,6 +137,10 @@ minetest.register_entity( "pride_flags:wavingflag", {
 	},
 
 	on_activate = function ( self, staticdata, dtime )
+		if delete_if_orphan( self) then
+			return
+		end
+		-- Init stuff
 		self:reset_animation( true )
 		self.object:set_armor_groups( { immortal = 1 } )
 
@@ -178,6 +194,9 @@ minetest.register_entity( "pride_flags:wavingflag", {
 		self.anim_timer = self.anim_timer - dtime
 
 		if self.anim_timer <= 0 then
+			if delete_if_orphan( self) then
+				return
+			end
 			self:reset_animation( )
 		end
 	end,
