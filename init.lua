@@ -5,6 +5,8 @@
 -- Copyright (c) 2022, Leslie E. Krause
 --------------------------------------------------------
 
+pride_flags = {}
+
 local wind_noise = PerlinNoise( 204, 1, 0, 500 )
 -- Check whether the new `get_2d` Perlin function is available,
 -- otherwise use `get2d`. Needed to suppress deprecation
@@ -61,33 +63,41 @@ local flag_list = {
 	-- queer
 	"queer",}
 
-local next_flag = {}
-local prev_flag = {}
-for f=1, #flag_list do
-	local name1 = flag_list[f]
-	local name0, name2
-	if f < #flag_list then
-		name2 = flag_list[f+1]
-	else
-		name2 = flag_list[1]
+local next_flag, prev_flag
+local update_next_prev_flag_lists = function()
+	next_flag = {}
+	prev_flag = {}
+	for f=1, #flag_list do
+		local name1 = flag_list[f]
+		local name0, name2
+		if f < #flag_list then
+			name2 = flag_list[f+1]
+		else
+			name2 = flag_list[1]
+		end
+		if f == 1 then
+			name0 = flag_list[#flag_list]
+		else
+			name0 = flag_list[f-1]
+		end
+		next_flag[name1] = name2
+		prev_flag[name1] = name0
 	end
-	if f == 1 then
-		name0 = flag_list[#flag_list]
-	else
-		name0 = flag_list[f-1]
-	end
-	next_flag[name1] = name2
-	prev_flag[name1] = name0
+end
+update_next_prev_flag_lists()
+
+local flag_exists = function(flag_name)
+	return next_flag[ flag_name] ~= nil
 end
 local get_next_flag = function(current_flag_name)
-	if not current_flag_name or not next_flag[ current_flag_name ] then
+	if not current_flag_name or not flag_exists( current_flag_name ) then
 		return DEFAULT_FLAG
 	else
 		return next_flag[current_flag_name]
 	end
 end
 local get_prev_flag = function(current_flag_name)
-	if not current_flag_name or not prev_flag[ current_flag_name ] then
+	if not current_flag_name or not flag_exists( current_flag_name ) then
 		return DEFAULT_FLAG
 	else
 		return prev_flag[current_flag_name]
@@ -619,3 +629,56 @@ minetest.register_node( "pride_flags:upper_mast_hidden_2", {
 	diggable = false,
 	floodable = false,
 })
+
+-- API
+pride_flags.add_flag = function( name )
+	if flag_exists( name ) then
+		return false
+	end
+	table.insert( flag_list, name )
+	update_next_prev_flag_lists()
+	return true
+end
+
+pride_flags.get_flags = function( )
+	return table.copy( flag_list )
+end
+
+pride_flags.set_flag_at = function( pos, flag_name )
+	local node = minetest.get_node( pos )
+	if node.name ~= "pride_flags:upper_mast" then
+		return false
+	end
+	if not flag_exists( flag_name ) then
+		return false
+	end
+	local node_idx = minetest.hash_node_position( pos )
+	local aflag = active_flags[ node_idx ]
+	local flag
+	if aflag then
+		flag = aflag:get_luaentity( )
+	end
+	if flag then
+		local set_flag_name = flag:reset_texture( flag_name )
+		if set_flag_name == flag_name then
+			local meta = minetest.get_meta( pos )
+			meta:set_string("flag_name", flag_name)
+			return true
+		end
+	end
+	return false
+end
+
+pride_flags.get_flag_at = function( pos )
+	local node = minetest.get_node( pos )
+	if node.name ~= "pride_flags:upper_mast" then
+		return nil
+	end
+	local meta = minetest.get_meta( pos )
+	local flag_name = meta:get_string("flag_name")
+	if flag_name ~= "" then
+		return flag_name
+	end
+end
+
+

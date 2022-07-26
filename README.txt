@@ -54,6 +54,11 @@ These flags are available:
 * Queer
 	* Queer
 
+API (for programmers)
+----------------------
+This mod has a few helper functions if you're a programmer and want to interface with it.
+You can add custom flags and more. See `API.md` for a list of all functions.
+
 Repository
 ----------------------
 
