@@ -25,9 +25,10 @@ local rad_90 = pi / 2
 local DEFAULT_FLAG = "rainbow"
 
 -- Flag list for the old number-based storing of flags, used up to
--- 8fd4f9661e123bc84c0499c4809537e8aeb24c3b. Do not change this list!
+-- 8fd4f9661e123bc84c0499c4809537e8aeb24c3b.
+-- DO NOT CHANGE THIS LIST!
 local legacy_flag_list = {
-	"rainbow", "progress", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual",
+	"rainbow", "lesbian", "bisexual", "transgender", "genderqueer", "nonbinary", "pansexual", "asexual",
 	"vincian", "polysexual", "omnisexual", "graysexual", "demisexual", "homoromantic", "biromantic",
 	"polyromantic", "panromantic", "omniromantic", "aromantic", "grayromantic", "demiromantic",
 	"androgyne", "demigender", "maverique", "neutrois", "multigender", "polygender", "pangender", "agender",
