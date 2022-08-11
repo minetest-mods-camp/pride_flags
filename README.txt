@@ -29,8 +29,10 @@ List of flags
 --------------------
 These flags are available:
 
-* Orientations (sexual, romantic or other)
+* Broader community:
 	* Gay/LGBTQ+ (rainbow flag)
+	* Progress Pride
+* Orientations (sexual, romantic or other)
 	* Lesbian
 	* Vincian
 * Sexual orientations

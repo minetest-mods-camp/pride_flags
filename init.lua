@@ -34,10 +34,9 @@ local legacy_flag_list = {
 	"genderfluid", "intersex", "polyamorous", "queer", "demigirl", "demiboy", "bigender", "trigender",
 }
 local flag_list = {
-	-- rainbow flag / LGBT+ Pride flag / Gay Pride flag
-	"rainbow",
-	-- progress flag
-	"progress",
+	-- broader community
+	"rainbow", -- rainbow flag / LGBTQ+ Pride flag / Gay Pride flag
+	"progress", -- Progress Pride
 	-- orientations (general)
 	"lesbian", "vincian",
 	-- sexual orientations
