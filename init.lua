@@ -364,7 +364,7 @@ local function cycle_flag( pos, player, cycle_backwards )
 	local pname = player:get_player_name( )
 	if minetest.is_protected( pos, pname ) and not
 			minetest.check_player_privs( pname, "protection_bypass") then
-		minetest.register_protection_violation( pos, pname )
+		minetest.record_protection_violation( pos, pname )
 		return
 	end
 
