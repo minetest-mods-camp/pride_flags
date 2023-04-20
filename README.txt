@@ -103,3 +103,8 @@ The source code is licensed under the LGPLv3.
 The media is licensed under CC BY-SA 3.0.
 
 See LICENSE.txt for details and credits.
+
+Translation credits:
+
+* German: Wuzzy
+* French: Z-Master
