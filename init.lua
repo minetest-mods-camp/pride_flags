@@ -422,7 +422,7 @@ minetest.register_node( "pride_flags:upper_mast", {
 	node_placement_prediction = "",
 
 	on_place = function( itemstack, placer, pointed_thing )
-		if not pointed_thing.type == "node" then
+		if pointed_thing.type ~= "node" then
 			return itemstack
 		end
 
